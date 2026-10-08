@@ -1,0 +1,52 @@
+package androidx.compose.ui.platform;
+
+import android.view.Choreographer;
+import java.util.ArrayList;
+import kotlin.Unit;
+
+/* JADX INFO: compiled from: r8-map-id-0d0aa97d1fad3edd99b81b175d33e009605b3d4793e5c1d21bed0e5a39522f8f */
+/* JADX INFO: loaded from: classes.dex */
+public final class AndroidUiDispatcher$dispatchCallback$1 implements Choreographer.FrameCallback, Runnable {
+    public final /* synthetic */ AndroidUiDispatcher this$0;
+
+    public AndroidUiDispatcher$dispatchCallback$1(AndroidUiDispatcher androidUiDispatcher) {
+        this.this$0 = androidUiDispatcher;
+    }
+
+    @Override // android.view.Choreographer.FrameCallback
+    public final void doFrame(long j) {
+        this.this$0.handler.removeCallbacks(this);
+        AndroidUiDispatcher.access$performTrampolineDispatch(this.this$0);
+        AndroidUiDispatcher androidUiDispatcher = this.this$0;
+        synchronized (androidUiDispatcher.lock) {
+            if (androidUiDispatcher.scheduledFrameDispatch) {
+                androidUiDispatcher.scheduledFrameDispatch = false;
+                ArrayList arrayList = androidUiDispatcher.toRunOnFrame;
+                androidUiDispatcher.toRunOnFrame = androidUiDispatcher.spareToRunOnFrame;
+                androidUiDispatcher.spareToRunOnFrame = arrayList;
+                int size = arrayList.size();
+                for (int i = 0; i < size; i++) {
+                    ((Choreographer.FrameCallback) arrayList.get(i)).doFrame(j);
+                }
+                arrayList.clear();
+            }
+        }
+    }
+
+    @Override // java.lang.Runnable
+    public final void run() {
+        AndroidUiDispatcher.access$performTrampolineDispatch(this.this$0);
+        AndroidUiDispatcher androidUiDispatcher = this.this$0;
+        synchronized (androidUiDispatcher.lock) {
+            try {
+                if (androidUiDispatcher.toRunOnFrame.isEmpty()) {
+                    androidUiDispatcher.choreographer.removeFrameCallback(this);
+                    androidUiDispatcher.scheduledFrameDispatch = false;
+                }
+                Unit unit = Unit.INSTANCE;
+            } catch (Throwable th) {
+                throw th;
+            }
+        }
+    }
+}

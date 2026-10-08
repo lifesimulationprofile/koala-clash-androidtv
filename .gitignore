@@ -1,0 +1,13 @@
+.gradle/
+build/
+*.class
+
+*.apk
+*.dex
+*.jar
+*.so
+
+*.log
+.idea/
+*.iml
+.DS_Store

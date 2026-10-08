@@ -1,0 +1,17 @@
+package com.google.android.gms.internal.mlkit_common;
+
+/* JADX INFO: compiled from: r8-map-id-0d0aa97d1fad3edd99b81b175d33e009605b3d4793e5c1d21bed0e5a39522f8f */
+/* JADX INFO: loaded from: classes.dex */
+public final class zzru {
+    public final boolean equals(Object obj) {
+        return obj == this || (obj instanceof zzru);
+    }
+
+    public final int hashCode() {
+        return -228219804;
+    }
+
+    public final String toString() {
+        return "MLKitLoggingOptions{libraryName=common, enableFirelog=true, firelogEventType=1}";
+    }
+}

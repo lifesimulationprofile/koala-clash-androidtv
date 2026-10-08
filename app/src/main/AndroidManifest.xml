@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="120000"
+    android:versionName="1.2.0"
+    android:compileSdkVersion="36"
+    android:compileSdkVersionCodename="16"
+    package="com.koala.clash"
+    platformBuildVersionCode="36"
+    platformBuildVersionName="16">
+    <uses-sdk
+        android:minSdkVersion="23"
+        android:targetSdkVersion="35"/>
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <permission
+        android:label="@string/receive_clash_broadcasts"
+        android:name="com.koala.clash.permission.RECEIVE_BROADCASTS"
+        android:protectionLevel="system|signature"
+        android:description="@string/receive_broadcasts_of_clash"/>
+    <uses-permission android:name="com.koala.clash.permission.RECEIVE_BROADCASTS"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <permission
+        android:name="com.koala.clash.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.koala.clash.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <application
+        android:theme="@style/BootstrapTheme"
+        android:label="@string/application_name"
+        android:icon="@mipmap/ic_launcher"
+        android:name="com.github.kr328.clash.MainApplication"
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:banner="@mipmap/ic_banner"
+        android:extractNativeLibs="false"
+        android:fullBackupContent="@xml/full_backup_content"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory">
+        <meta-data
+            android:name="releaseName"
+            android:value="@string/release_name"/>
+        <meta-data
+            android:name="releaseCode"
+            android:value="@integer/release_code"/>
+        <activity
+            android:label="@string/launch_name"
+            android:name="com.github.kr328.clash.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="uiMode">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
+            </intent-filter>
+        </activity>
+        <activity-alias
+            android:name="com.github.kr328.clash.MainActivityAlias"
+            android:exported="true"
+            android:targetActivity="com.github.kr328.clash.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:label="@string/external_control_activity"
+            android:name="com.github.kr328.clash.ExternalControlActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="clash"/>
+                <data android:scheme="clashmeta"/>
+                <data android:scheme="koala-clash"/>
+                <data android:host="install-config"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.github.metacubex.clash.meta.action.START_CLASH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.github.metacubex.clash.meta.action.STOP_CLASH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.github.metacubex.clash.meta.action.TOGGLE_CLASH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/BootstrapTheme"
+            android:label="@string/share_to_tv_title"
+            android:name="com.github.kr328.clash.ShareToTvActivity"
+            android:exported="true"
+            android:configChanges="uiMode">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="clash"
+                    android:host="share-to-tv"/>
+                <data
+                    android:scheme="clashmeta"
+                    android:host="share-to-tv"/>
+                <data
+                    android:scheme="koala-clash"
+                    android:host="share-to-tv"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/application_broken"
+            android:name="com.github.kr328.clash.ApkBrokenActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/application_crashed"
+            android:name="com.github.kr328.clash.AppCrashedActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/profile"
+            android:name="com.github.kr328.clash.PropertiesActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/providers"
+            android:name="com.github.kr328.clash.ProvidersActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/logs"
+            android:name="com.github.kr328.clash.LogsActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/logcat"
+            android:name="com.github.kr328.clash.LogcatActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/network"
+            android:name="com.github.kr328.clash.NetworkSettingsActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/app"
+            android:name="com.github.kr328.clash.AppSettingsActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/access_control_packages"
+            android:name="com.github.kr328.clash.AccessControlActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/connections"
+            android:name="com.github.kr328.clash.ConnectionsActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <activity
+            android:label="@string/files"
+            android:name="com.github.kr328.clash.FilesActivity"
+            android:exported="false"
+            android:configChanges="uiMode"/>
+        <service
+            android:label="@string/clash_logcat"
+            android:name="com.github.kr328.clash.LogcatService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="explanation_for_special_use"/>
+        </service>
+        <service
+            android:label="@string/launch_name"
+            android:icon="@drawable/ic_logo_service"
+            android:name="com.github.kr328.clash.TileService"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.github.kr328.clash.RestartReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.github.kr328.clash.DialerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE"/>
+                <data
+                    android:scheme="android_secret_code"
+                    android:host="252746382"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:label="@string/clash_meta_for_android"
+            android:name="com.github.kr328.clash.service.ClashService"
+            android:exported="false"
+            android:process=":background"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="explanation_for_special_use"/>
+        </service>
+        <service
+            android:label="@string/clash_meta_for_android"
+            android:name="com.github.kr328.clash.service.TunService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="false"
+            android:process=":background"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="explanation_for_special_use"/>
+            <intent-filter>
+                <action android:name="android.net.VpnService"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.github.kr328.clash.service.RemoteService"
+            android:exported="false"
+            android:process=":background"/>
+        <service
+            android:name="com.github.kr328.clash.service.ProfileWorker"
+            android:exported="false"
+            android:process=":background"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="explanation_for_special_use"/>
+        </service>
+        <provider
+            android:name="com.github.kr328.clash.service.FilesProvider"
+            android:permission="android.permission.MANAGE_DOCUMENTS"
+            android:exported="true"
+            android:process=":background"
+            android:authorities="com.koala.clash.files"
+            android:grantUriPermissions="true">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER"/>
+            </intent-filter>
+        </provider>
+        <provider
+            android:name="com.github.kr328.clash.service.StatusProvider"
+            android:exported="false"
+            android:process=":background"
+            android:authorities="com.koala.clash.status"/>
+        <provider
+            android:name="com.github.kr328.clash.service.PreferenceProvider"
+            android:exported="false"
+            android:process=":background"
+            android:authorities="com.koala.clash.settings"/>
+        <receiver
+            android:name="com.github.kr328.clash.service.ProfileReceiver"
+            android:permission="com.koala.clash.permission.RECEIVE_BROADCASTS"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":background">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="{applicationId}.intent.action.PROFILE_REQUEST_UPDATE"/>
+                <data android:scheme="uuid"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:theme="@style/QuickieScannerActivity"
+            android:name="io.github.g00fy2.quickie.QRScannerActivity"
+            android:screenOrientation="behind"/>
+        <service
+            android:name="androidx.camera.core.impl.MetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
+                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider"/>
+        </service>
+        <service
+            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
+            android:exported="false"
+            android:directBootAware="true">
+            <meta-data
+                android:name="com.google.firebase.components:com.google.mlkit.vision.barcode.internal.BarcodeRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+        </service>
+        <provider
+            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
+            android:exported="false"
+            android:authorities="com.koala.clash.mlkitinitprovider"
+            android:initOrder="99"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            android:authorities="com.koala.clash.androidx-startup">
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+                android:value="androidx.startup"/>
+        </provider>
+        <uses-library
+            android:name="androidx.window.extensions"
+            android:required="false"/>
+        <uses-library
+            android:name="androidx.window.sidecar"
+            android:required="false"/>
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:exported="false"
+            android:directBootAware="true"/>
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+            android:exported="false">
+            <meta-data
+                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+                android:value="cct"/>
+        </service>
+        <service
+            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false"/>
+        <receiver
+            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+            android:exported="false"/>
+    </application>
+</manifest>

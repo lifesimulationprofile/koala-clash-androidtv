@@ -1,0 +1,25 @@
+package androidx.compose.runtime.external.kotlinx.collections.immutable.implementations.persistentOrderedSet;
+
+import androidx.compose.runtime.external.kotlinx.collections.immutable.internal.EndOfChain;
+
+/* JADX INFO: compiled from: r8-map-id-0d0aa97d1fad3edd99b81b175d33e009605b3d4793e5c1d21bed0e5a39522f8f */
+/* JADX INFO: loaded from: classes.dex */
+public final class Links {
+    public final Object next;
+    public final Object previous;
+
+    public Links(Object obj, Object obj2) {
+        this.previous = obj;
+        this.next = obj2;
+    }
+
+    /* JADX WARN: Illegal instructions before constructor call */
+    public Links() {
+        EndOfChain endOfChain = EndOfChain.INSTANCE;
+        this(endOfChain, endOfChain);
+    }
+
+    public Links(Object obj) {
+        this(obj, EndOfChain.INSTANCE);
+    }
+}

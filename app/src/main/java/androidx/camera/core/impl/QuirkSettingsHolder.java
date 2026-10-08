@@ -1,0 +1,11 @@
+package androidx.camera.core.impl;
+
+import androidx.compose.ui.node.NodeChain;
+
+/* JADX INFO: compiled from: r8-map-id-0d0aa97d1fad3edd99b81b175d33e009605b3d4793e5c1d21bed0e5a39522f8f */
+/* JADX INFO: loaded from: classes.dex */
+public final class QuirkSettingsHolder {
+    public static final QuirkSettings DEFAULT = new QuirkSettings(true, null, null);
+    public static final QuirkSettingsHolder sInstance = new QuirkSettingsHolder();
+    public final NodeChain.Differ mObservable = new NodeChain.Differ(DEFAULT);
+}
